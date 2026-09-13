@@ -259,19 +259,24 @@
           <p class="caption">Piper task success rate (%). Each pair of task and method comprised 30 rollouts from one evaluation pass. Avg. is the unweighted mean across the four tasks.</p>
         </article>
 
-        <article class="card">
-          <figure>
-            <img src="assets/progress.png" alt="Current-progress predictions versus ground truth for eight tasks, two episodes each.">
-            <figcaption>Current-progress predictions for the first eight tasks, with two episodes per task. Blue and orange identify episodes; solid and dashed curves denote predictions and reference labels. The horizontal axis is normalized execution time.</figcaption>
-          </figure>
-        </article>
-
-        <article class="card">
-          <figure>
-            <img src="assets/history.png" alt="Sixteen-slot visual history comparisons for five tasks, each with a ground-truth row and a prediction-associated row.">
-            <figcaption>Sixteen-slot visual-history comparisons for (a) ButtonUnmask, (b) InsertPeg, (c) PatternLock, (d) SwingXtimes, and (e) VideoRepick. Blue and orange borders distinguish reference (GT) and prediction-associated (Pred) images. These qualitative pairs show scene correspondence; they do not establish exact temporal retrieval.</figcaption>
-          </figure>
-        </article>
+        <div class="figure-grid">
+          <article class="card">
+            <figure>
+              <div class="figure-frame">
+                <img src="assets/progress.png" alt="Current-progress predictions versus ground truth for eight tasks, two episodes each.">
+              </div>
+              <figcaption>Current-progress predictions for the first eight tasks, with two episodes per task. Blue and orange identify episodes; solid and dashed curves denote predictions and reference labels. The horizontal axis is normalized execution time.</figcaption>
+            </figure>
+          </article>
+          <article class="card">
+            <figure>
+              <div class="figure-frame">
+                <img src="assets/history.png" alt="Sixteen-slot visual history comparisons for five tasks, each with a ground-truth row and a prediction-associated row.">
+              </div>
+              <figcaption>Sixteen-slot visual-history comparisons for (a) ButtonUnmask, (b) InsertPeg, (c) PatternLock, (d) SwingXtimes, and (e) VideoRepick. Blue and orange borders distinguish reference (GT) and prediction-associated (Pred) images. These qualitative pairs show scene correspondence; they do not establish exact temporal retrieval.</figcaption>
+            </figure>
+          </article>
+        </div>
       </div>
     </section>
 
