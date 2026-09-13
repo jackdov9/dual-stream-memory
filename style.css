@@ -207,26 +207,28 @@ nav.pills a:hover {
 .figure-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
   gap: 18px;
   align-items: stretch;
 }
 
-.method-grid .card,
-.figure-grid .card {
+.method-grid > .card,
+.figure-grid > .card {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  margin-top: 0;
+  min-height: 0;
+  height: auto;
+  align-self: stretch;
 }
 
 .card-heading {
   border-bottom: 1px solid var(--line);
-  justify-content: space-between;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
   gap: 16px;
   padding: 0 0 16px;
-  min-height: 4.75rem;
-  display: flex;
+  min-height: 4.9rem;
 }
 
 .card-heading h3 {
@@ -234,6 +236,7 @@ nav.pills a:hover {
   font-size: 18px;
   line-height: 1.35;
   font-weight: 600;
+  min-height: 2.7em;
 }
 
 .card-heading small {
@@ -280,6 +283,11 @@ section {
   margin-top: 16px;
 }
 
+.method-grid > .card + .card,
+.figure-grid > .card + .card {
+  margin-top: 0;
+}
+
 .figure-grid + .card,
 .card + .figure-grid {
   margin-top: 16px;
@@ -298,13 +306,17 @@ figure {
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-height: 0;
 }
 
 .figure-frame {
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 320px;
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  min-height: 0;
   background: var(--white);
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -313,15 +325,17 @@ figure {
 .figure-frame img,
 figure.hero img {
   display: block;
-  width: 100%;
-  height: auto;
   background: var(--white);
 }
 
 .figure-frame img {
   width: 100%;
-  height: 320px;
+  height: 100%;
   object-fit: contain;
+}
+
+.figure-grid figcaption {
+  min-height: 5.6em;
 }
 
 figcaption,
@@ -449,9 +463,8 @@ a:focus-visible {
     grid-template-columns: 1fr;
   }
 
-  .figure-frame,
-  .figure-frame img {
-    height: 240px;
+  .figure-frame {
+    aspect-ratio: 16 / 11;
   }
 
   h1 {
