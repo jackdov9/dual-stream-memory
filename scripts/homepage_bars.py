@@ -1,8 +1,7 @@
-"""Homepage result bars from the English manuscript tables.
+"""Full-width three-panel closed-loop results for the paper page.
 
-Core claim: dual-stream memory raises RoboMME suite means over FrameSamp+Modul,
-with the largest suite gain on Reference, while Piper gains concentrate on
-repeated-action counting and Shell declines.
+(a) component additions, (b) RoboMME suite means, (c) Piper task TSR.
+Numbers are from the English manuscript tables in root.tex.
 """
 from pathlib import Path
 
@@ -26,7 +25,7 @@ mpl.rcParams.update({
     "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans", "sans-serif"],
     "svg.fonttype": "none",
     "pdf.fonttype": 42,
-    "font.size": 11,
+    "font.size": 12,
     "axes.spines.right": False,
     "axes.spines.top": False,
     "axes.linewidth": 0.8,
@@ -41,65 +40,83 @@ mpl.rcParams.update({
 })
 
 
-def save(fig, stem):
-    OUT.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT / f"{stem}.svg", bbox_inches="tight")
-    fig.savefig(OUT / f"{stem}.pdf", bbox_inches="tight")
-    fig.savefig(OUT / f"{stem}.png", dpi=200, bbox_inches="tight")
-    plt.close(fig)
-
-
-def grouped_bars(ax, labels, series, colors, width=0.34):
-    x = np.arange(len(labels))
-    n = len(series)
-    offsets = (np.arange(n) - (n - 1) / 2) * width
-    for off, (name, values), color in zip(offsets, series, colors):
-        ax.bar(x + off, values, width=width * 0.92, color=color, edgecolor=INK,
-               linewidth=0.6, label=name, zorder=3)
-    ax.set_xticks(x)
-    ax.set_xticklabels(labels)
+def style_ax(ax):
     ax.set_axisbelow(True)
     ax.yaxis.grid(True, color=LINE, linewidth=0.6)
     ax.tick_params(length=0)
+    for label in ax.get_xticklabels():
+        label.set_fontsize(11)
 
 
-def robomme():
+def panel_components(ax):
+    labels = ["Counting\nGDN", "Permanence\nretrieval", "Reference\nfusion"]
+    deltas = [6.94, 4.22, 4.50]
+    x = np.arange(len(labels))
+    ax.bar(x, deltas, color=OURS, edgecolor=INK, linewidth=0.6, width=0.62, zorder=3)
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.set_ylabel("Δ TSR (pp)")
+    ax.set_ylim(0, 9)
+    ax.set_title("(a) Component additions", loc="left", fontsize=13, pad=8)
+    style_ax(ax)
+
+
+def panel_suites(ax):
     labels = ["Counting", "Permanence", "Reference", "Imitation"]
-    framesamp = [65.22, 25.11, 36.33, 51.39]
-    ours = [70.83, 27.75, 45.31, 53.00]
-    fig, ax = plt.subplots(figsize=(6.4, 3.4))
-    grouped_bars(
-        ax, labels,
-        [("FrameSamp+Modul", framesamp), ("Ours", ours)],
-        [FRAMESAMP, OURS],
-        width=0.36,
-    )
+    framesamp = np.array([65.22, 25.11, 36.33, 51.39])
+    ours = np.array([70.83, 27.75, 45.31, 53.00])
+    x = np.arange(len(labels))
+    w = 0.36
+    ax.bar(x - w / 2, framesamp, width=w, color=FRAMESAMP, edgecolor=INK,
+           linewidth=0.6, label="FrameSamp+Modul", zorder=3)
+    ax.bar(x + w / 2, ours, width=w, color=OURS, edgecolor=INK,
+           linewidth=0.6, label="Ours", zorder=3)
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, rotation=18, ha="right")
     ax.set_ylabel("TSR (%)")
-    ax.set_ylim(0, 85)
-    ax.legend(loc="upper left", ncol=2, fontsize=10)
-    fig.tight_layout()
-    save(fig, "robomme_suites")
+    ax.set_ylim(0, 92)
+    ax.set_title("(b) RoboMME suites", loc="left", fontsize=13, pad=8)
+    ax.legend(loc="upper left", fontsize=10, ncol=1)
+    style_ax(ax)
 
 
-def piper():
+def panel_piper(ax):
     labels = ["Pick×3", "Swing×2", "RePick", "Shell"]
     series = [
-        (r"$\pi_{0.5}$", [20.0, 6.7, 3.3, 30.0]),
-        ("NativeMEM", [20.0, 30.0, 40.0, 36.7]),
-        ("FrameSamp+Modul", [26.7, 36.7, 33.3, 53.3]),
-        ("Ours", [80.0, 93.3, 36.7, 40.0]),
+        (r"$\pi_{0.5}$", [20.0, 6.7, 3.3, 30.0], BASE),
+        ("NativeMEM", [20.0, 30.0, 40.0, 36.7], NATIVE),
+        ("FrameSamp", [26.7, 36.7, 33.3, 53.3], FRAMESAMP),
+        ("Ours", [80.0, 93.3, 36.7, 40.0], OURS),
     ]
-    colors = [BASE, NATIVE, FRAMESAMP, OURS]
-    fig, ax = plt.subplots(figsize=(6.4, 3.4))
-    grouped_bars(ax, labels, series, colors, width=0.2)
+    x = np.arange(len(labels))
+    n = len(series)
+    width = 0.2
+    offsets = (np.arange(n) - (n - 1) / 2) * width
+    for off, (name, values, color) in zip(offsets, series):
+        ax.bar(x + off, values, width=width * 0.92, color=color, edgecolor=INK,
+               linewidth=0.5, label=name, zorder=3)
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
     ax.set_ylabel("TSR (%)")
-    ax.set_ylim(0, 110)
-    ax.legend(loc="upper right", ncol=2, fontsize=9)
-    fig.tight_layout()
-    save(fig, "piper_tasks")
+    ax.set_ylim(0, 115)
+    ax.set_title("(c) Piper tasks", loc="left", fontsize=13, pad=8)
+    ax.legend(loc="upper right", fontsize=9, ncol=2)
+    style_ax(ax)
+
+
+def main():
+    OUT.mkdir(parents=True, exist_ok=True)
+    fig, axes = plt.subplots(1, 3, figsize=(13.4, 4.15), layout="constrained")
+    panel_components(axes[0])
+    panel_suites(axes[1])
+    panel_piper(axes[2])
+    stem = OUT / "results_trio"
+    fig.savefig(stem.with_suffix(".svg"), bbox_inches="tight")
+    fig.savefig(stem.with_suffix(".pdf"), bbox_inches="tight")
+    fig.savefig(stem.with_suffix(".png"), dpi=180, bbox_inches="tight")
+    plt.close(fig)
+    print("wrote", stem)
 
 
 if __name__ == "__main__":
-    robomme()
-    piper()
-    print("wrote", OUT)
+    main()

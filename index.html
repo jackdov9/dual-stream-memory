@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dual-Stream Memory for Vision-Language-Action Policies | ICRA 2027</title>
   <meta name="description" content="Dual-stream memory for VLA policies: recurrent execution context and threshold retrieval of historical images. ICRA 2027, under double-anonymous review.">
-  <link rel="icon" href="favicon.svg?v=6" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="icon" href="favicon.svg?v=7" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
   <header class="site-head">
@@ -103,20 +103,12 @@
           <p>The complete model reached 49.22% mean TSR on RoboMME versus 44.51% for FrameSamp+Modul. All four suite means increased; fourteen of sixteen tasks improved. VideoUnmaskSwap and PatternLock declined. Combined gains do not simply add across components. On Piper, mean TSR is 62.5% versus 37.5%, with the largest gains on repeated-action counting; Shell declined from 53.3% to 40.0%.</p>
         </article>
 
-        <div class="plot-grid figure-grid">
-          <article class="card">
-            <figure>
-              <img src="assets/plots/robomme_suites.svg" alt="Grouped bars of RoboMME suite TSR for FrameSamp+Modul versus Ours.">
-              <figcaption>RoboMME suite means. Ours is above FrameSamp+Modul on every suite, with the largest gain on Reference (+8.98 points). Overall mean 49.22% versus 44.51%.</figcaption>
-            </figure>
-          </article>
-          <article class="card">
-            <figure>
-              <img src="assets/plots/piper_tasks.svg" alt="Grouped bars of Piper TSR for four methods on four tasks.">
-              <figcaption>Piper TSR, 30 rollouts per cell. Gains concentrate on Pick×3 and Swing×2. RePick is close to NativeMEM. Shell is below FrameSamp+Modul.</figcaption>
-            </figure>
-          </article>
-        </div>
+        <article class="card">
+          <figure>
+            <img class="trio" src="assets/plots/results_trio.svg" alt="Three-panel results: component additions, RoboMME suite means, and Piper task success.">
+            <figcaption>(a) Adding one component to FrameSamp+Modul. (b) Complete-model suite means versus the published FrameSamp+Modul reference. (c) Piper TSR, 30 rollouts per cell. Ours is terracotta.</figcaption>
+          </figure>
+        </article>
 
         <article class="card">
           <div class="table-wrap">
@@ -257,24 +249,24 @@
           <p class="caption">Piper TSR (%): 30 rollouts per task and method. Avg. weights the four tasks equally. The largest gains are on Pick×3 and Swing×2. Shell declined from 53.3% to 40.0%.</p>
         </article>
 
-        <div class="figure-grid">
-          <article class="card">
-            <figure>
-              <div class="figure-frame">
-                <img src="assets/progress.png" alt="Current-progress predictions versus ground truth for eight tasks, two episodes each.">
-              </div>
-              <figcaption>Current-progress predictions for the first eight tasks, with two episodes per task. Blue and orange identify episodes; solid and dashed curves denote predictions and reference labels. Progress-head MSE is 0.03430 over sixteen tasks.</figcaption>
-            </figure>
-          </article>
-          <article class="card">
-            <figure>
-              <div class="figure-frame">
-                <img src="assets/history.png" alt="Sixteen-slot visual history comparisons with green match boxes and red mismatch boxes.">
-              </div>
-              <figcaption>Sixteen-slot visual-history comparisons for five tasks. Green boxes mark scene matches and red boxes mark mismatches: 70 matches among 80 displayed slots. These examples illustrate action-conditioned reconstruction, not dataset-level retrieval accuracy.</figcaption>
-            </figure>
-          </article>
-        </div>
+        <article class="card">
+          <figure>
+            <img class="diag" src="assets/progress.png" alt="Current-progress predictions versus ground truth for eight tasks, two episodes each.">
+            <figcaption>Current-progress predictions for the first eight tasks, two episodes per task. Progress-head MSE is 0.03430 over sixteen tasks.</figcaption>
+          </figure>
+        </article>
+        <article class="card">
+          <figure>
+            <img class="diag" src="assets/history.png" alt="Sixteen-slot visual history comparisons with green match boxes and red mismatch boxes.">
+            <figcaption>Sixteen-slot visual-history comparisons for five tasks. Green boxes mark scene matches and red boxes mark mismatches: 70 matches among 80 displayed slots.</figcaption>
+          </figure>
+        </article>
+        <article class="card">
+          <figure>
+            <img class="diag" src="assets/dense_temporal.png" alt="Dense temporal retrieval scores for BinFill, PickXtimes, VideoPlaceOrder, and PatternLock.">
+            <figcaption>Dense temporal retrieval on four tasks at retriever step 7,750. Blue curves are temporal scores; gold lines mark keyframe centers. Selection uses LSE-logit threshold 0.6, not the dashed visualization line.</figcaption>
+          </figure>
+        </article>
       </div>
     </section>
 

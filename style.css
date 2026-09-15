@@ -438,11 +438,12 @@ a:focus-visible {
   outline-offset: 3px;
 }
 
-.plot-grid img {
+img.trio,
+img.diag {
   width: 100%;
   height: auto;
   display: block;
-  background: var(--card);
+  background: var(--white);
   border-radius: 8px;
 }
 
