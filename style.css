@@ -438,6 +438,74 @@ a:focus-visible {
   outline-offset: 3px;
 }
 
+.plot-grid img {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: var(--card);
+  border-radius: 8px;
+}
+
+.video-matrix {
+  display: grid;
+  grid-template-columns: 7.2rem repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+
+.video-col,
+.video-task {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+.video-task {
+  justify-content: flex-end;
+  text-align: right;
+  padding-right: 4px;
+  color: var(--ink);
+}
+
+.video-slot {
+  aspect-ratio: 16 / 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px;
+  border: 1.5px dashed var(--line);
+  border-radius: var(--radius);
+  background: var(--gray);
+  text-align: center;
+}
+
+.video-slot strong {
+  font-size: 13px;
+}
+
+.video-slot .tsr {
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.video-slot .soon {
+  font-size: 11px;
+  color: var(--faint);
+}
+
+.video-slot.ours {
+  border-color: var(--accent);
+  background: #f8ece4;
+}
+
 .site-foot {
   border-top: 1px solid var(--line);
   padding: 28px 0 48px;
@@ -459,8 +527,24 @@ a:focus-visible {
   }
 
   .method-grid,
-  .figure-grid {
+  .figure-grid,
+  .plot-grid {
     grid-template-columns: 1fr;
+  }
+
+  .video-matrix {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .video-col {
+    display: none;
+  }
+
+  .video-task {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 8px 0 0;
   }
 
   .figure-frame {

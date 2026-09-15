@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dual-Stream Memory for Vision-Language-Action Policies | ICRA 2027</title>
   <meta name="description" content="Dual-stream memory for VLA policies: recurrent execution context and threshold retrieval of historical images. ICRA 2027, under double-anonymous review.">
-  <link rel="icon" href="favicon.svg?v=5" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="icon" href="favicon.svg?v=6" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
   <header class="site-head">
@@ -38,6 +38,7 @@
         <a href="#abstract">Abstract</a>
         <a href="#method">Method</a>
         <a href="#results">Results</a>
+        <a href="#real-robot">Real robot</a>
         <a href="#bibtex">BibTeX</a>
       </nav>
     </section>
@@ -101,6 +102,21 @@
         <article class="card">
           <p>The complete model reached 49.22% mean TSR on RoboMME versus 44.51% for FrameSamp+Modul. All four suite means increased; fourteen of sixteen tasks improved. VideoUnmaskSwap and PatternLock declined. Combined gains do not simply add across components. On Piper, mean TSR is 62.5% versus 37.5%, with the largest gains on repeated-action counting; Shell declined from 53.3% to 40.0%.</p>
         </article>
+
+        <div class="plot-grid figure-grid">
+          <article class="card">
+            <figure>
+              <img src="assets/plots/robomme_suites.svg" alt="Grouped bars of RoboMME suite TSR for FrameSamp+Modul versus Ours.">
+              <figcaption>RoboMME suite means. Ours is above FrameSamp+Modul on every suite, with the largest gain on Reference (+8.98 points). Overall mean 49.22% versus 44.51%.</figcaption>
+            </figure>
+          </article>
+          <article class="card">
+            <figure>
+              <img src="assets/plots/piper_tasks.svg" alt="Grouped bars of Piper TSR for four methods on four tasks.">
+              <figcaption>Piper TSR, 30 rollouts per cell. Gains concentrate on Pick×3 and Swing×2. RePick is close to NativeMEM. Shell is below FrameSamp+Modul.</figcaption>
+            </figure>
+          </article>
+        </div>
 
         <article class="card">
           <div class="table-wrap">
@@ -259,6 +275,45 @@
             </figure>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section id="real-robot">
+      <div class="section-title">
+        <span>PHYSICAL</span>
+        <h2>Piper rollouts</h2>
+        <p>Four tasks and four methods, sixteen clips. Drop mp4 files at the paths in each slot. The layout stays when the videos arrive.</p>
+      </div>
+      <div class="video-matrix">
+        <div></div>
+        <div class="video-col">π<sub>0.5</sub></div>
+        <div class="video-col">NativeMEM</div>
+        <div class="video-col">FrameSamp+Modul</div>
+        <div class="video-col">Ours</div>
+
+        <div class="video-task">Pick×3</div>
+        <div class="video-slot"><strong>π<sub>0.5</sub></strong><span class="tsr">20.0% TSR</span><span class="soon">assets/videos/pickx3_pi05.mp4</span></div>
+        <div class="video-slot"><strong>NativeMEM</strong><span class="tsr">20.0% TSR</span><span class="soon">assets/videos/pickx3_nativemem.mp4</span></div>
+        <div class="video-slot"><strong>FrameSamp</strong><span class="tsr">26.7% TSR</span><span class="soon">assets/videos/pickx3_framesamp.mp4</span></div>
+        <div class="video-slot ours"><strong>Ours</strong><span class="tsr">80.0% TSR</span><span class="soon">assets/videos/pickx3_ours.mp4</span></div>
+
+        <div class="video-task">Swing×2</div>
+        <div class="video-slot"><strong>π<sub>0.5</sub></strong><span class="tsr">6.7% TSR</span><span class="soon">assets/videos/swingx2_pi05.mp4</span></div>
+        <div class="video-slot"><strong>NativeMEM</strong><span class="tsr">30.0% TSR</span><span class="soon">assets/videos/swingx2_nativemem.mp4</span></div>
+        <div class="video-slot"><strong>FrameSamp</strong><span class="tsr">36.7% TSR</span><span class="soon">assets/videos/swingx2_framesamp.mp4</span></div>
+        <div class="video-slot ours"><strong>Ours</strong><span class="tsr">93.3% TSR</span><span class="soon">assets/videos/swingx2_ours.mp4</span></div>
+
+        <div class="video-task">RePick</div>
+        <div class="video-slot"><strong>π<sub>0.5</sub></strong><span class="tsr">3.3% TSR</span><span class="soon">assets/videos/repick_pi05.mp4</span></div>
+        <div class="video-slot"><strong>NativeMEM</strong><span class="tsr">40.0% TSR</span><span class="soon">assets/videos/repick_nativemem.mp4</span></div>
+        <div class="video-slot"><strong>FrameSamp</strong><span class="tsr">33.3% TSR</span><span class="soon">assets/videos/repick_framesamp.mp4</span></div>
+        <div class="video-slot ours"><strong>Ours</strong><span class="tsr">36.7% TSR</span><span class="soon">assets/videos/repick_ours.mp4</span></div>
+
+        <div class="video-task">Shell</div>
+        <div class="video-slot"><strong>π<sub>0.5</sub></strong><span class="tsr">30.0% TSR</span><span class="soon">assets/videos/shell_pi05.mp4</span></div>
+        <div class="video-slot"><strong>NativeMEM</strong><span class="tsr">36.7% TSR</span><span class="soon">assets/videos/shell_nativemem.mp4</span></div>
+        <div class="video-slot"><strong>FrameSamp</strong><span class="tsr">53.3% TSR</span><span class="soon">assets/videos/shell_framesamp.mp4</span></div>
+        <div class="video-slot ours"><strong>Ours</strong><span class="tsr">40.0% TSR</span><span class="soon">assets/videos/shell_ours.mp4</span></div>
       </div>
     </section>
 
