@@ -1,6 +1,6 @@
 # Dual-stream memory
 
-Static homepage for the ICRA 2027 paper *Dual-Stream Memory for VLAs: Causal Retrieval, Streaming Compression, and Linear Multi-Scale Fusion*. Authors stay anonymous while the paper is under double-anonymous review.
+Static homepage for the ICRA 2027 paper *Dual-Stream Memory for Vision-Language-Action Policies*. Authors stay anonymous while the paper is under double-anonymous review. Visual tokens follow fireworks-tech-graph Claude Official.
 
 The GitHub Pages URL will be [https://jackdov9.github.io/dual-stream-memory/](https://jackdov9.github.io/dual-stream-memory/).
 

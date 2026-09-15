@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dual-Stream Memory for VLAs | ICRA 2027</title>
-  <meta name="description" content="Dual-stream memory for VLAs: causal retrieval, streaming compression, and linear multi-scale fusion. ICRA 2027, under double-anonymous review.">
-  <link rel="icon" href="favicon.svg?v=3" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=3">
+  <title>Dual-Stream Memory for Vision-Language-Action Policies | ICRA 2027</title>
+  <meta name="description" content="Dual-stream memory for VLA policies: recurrent execution context and threshold retrieval of historical images. ICRA 2027, under double-anonymous review.">
+  <link rel="icon" href="favicon.svg?v=4" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
   <header class="site-head">
@@ -24,14 +24,14 @@
   <main class="wrap">
     <section class="intro">
       <p class="eyebrow">ICRA 2027</p>
-      <h1>Dual-Stream Memory for VLAs: Causal Retrieval, Streaming Compression, and Linear Multi-Scale Fusion</h1>
+      <h1>Dual-Stream Memory for Vision-Language-Action Policies</h1>
       <p class="authors">Anonymous Authors</p>
-      <p class="lead">Task-conditioned retrieval and task-agnostic recurrent compression stay as separate memory streams. Linear fusion fills a fixed spatial budget. The policy reads patches and one temporal token through typed cross-attention.</p>
+      <p class="lead">Recurrent execution context stays in one temporal token. Task-conditioned retrieval keeps historical images above a relevance threshold. Linear fusion represents each retained frame in sixteen spatial tokens.</p>
       <div class="facts">
-        <span class="fact"><b>512</b> spatial slots</span>
-        <span class="fact"><b>32</b> retrieved frames</span>
         <span class="fact"><b>1</b> temporal token</span>
-        <span class="fact"><b>4</b> Piper tasks</span>
+        <span class="fact"><b>16</b> tokens / frame</span>
+        <span class="fact"><b>0.6</b> retrieval threshold</span>
+        <span class="fact"><b>62.5%</b> Piper mean TSR</span>
       </div>
       <p class="chip">Under double-anonymous review</p>
       <nav class="pills" aria-label="On this page">
@@ -45,8 +45,8 @@
     <section>
       <article class="card">
         <figure>
-          <img src="assets/teaser.png" alt="Dual-stream memory pipeline: dense retrieval and linear multi-scale fusion on the spatial stream, Gated DeltaNet compression on the temporal stream, and typed policy readout.">
-          <figcaption>Dual-stream memory and training supervision. (a) Task-conditioned dense retrieval selects historical frames; linear multi-scale fusion combines aligned coarse, base, and fine SigLIP features in 512 fixed slots. A task-agnostic Gated DeltaNet supplies one temporal token through a separate gated readout. (b) Keyframe and patch-mask losses supervise a shared relevance grid. (c) Progress regression and action-conditioned feature reconstruction supervise the compressed state; auxiliary heads and the frozen target encoder are removed before policy integration.</figcaption>
+          <img src="assets/teaser.png" alt="Dual-stream memory: Gated DeltaNet compression, threshold retrieval, and linear multi-scale fusion feeding a VLA policy.">
+          <figcaption>Dual-stream memory. (a) GDN compresses visual history into one temporal token; threshold retrieval and multi-scale fusion produce 16<em>m<sub>t</sub></em> spatial tokens from <em>m<sub>t</sub></em> retained frames. (b,c) Independent Stage 1 objectives; Stage 2 jointly trains the assembled policy. Auxiliary heads are removed before policy integration.</figcaption>
         </figure>
       </article>
     </section>
@@ -57,7 +57,7 @@
         <h2>Abstract</h2>
       </div>
       <article class="card">
-        <p>Long-horizon vision-language-action (VLA) control requires access to task-relevant visual evidence and compact temporal context. We present dual-stream memory that separates task-conditioned retrieval from task-agnostic recurrent compression. A dense retriever locates relevant frames and patches, while a Gated DeltaNet summarizes a stride-sampled causal history. Progress regression and action-conditioned reconstruction of past visual features supervise the compressed state. Linear multi-scale fusion combines coarse context and fine detail within 512 fixed spatial slots. Separate policy readouts integrate this spatial memory with one temporal token. Controlled RoboMME ablations evaluated frame retrieval, spatial fusion, and temporal readout. The complete model achieved <span class="tbd">[TBD]</span>% task success, exceeding FrameSamp+Modul by <span class="tbd">[TBD]</span> percentage points, and achieved <span class="tbd">[TBD]</span>% average success across four Piper tasks. These results support separate spatial and temporal memory interfaces within the evaluated tasks and history lengths.</p>
+        <p>Memory-dependent manipulation requires tracking execution progress while recovering visual evidence that is no longer visible. We present dual-stream memory for vision-language-action policies, separating recurrent execution context from task-conditioned access to historical images. A task-agnostic Gated DeltaNet compresses visual history into one temporal token. A retriever retains frames above a fixed relevance threshold, while linear multi-scale fusion represents each retained frame in sixteen spatial tokens. The two streams are pretrained independently and then jointly trained with the policy. Adding the components individually to FrameSamp+Modul yields average success gains of 6.94, 4.22, and 4.50 percentage points on Counting, Permanence, and Reference, respectively. These comparisons use the published RoboMME baseline and show task-dependent gains. The complete model achieves <span class="tbd">[TBD]</span>% overall success on sixteen RoboMME tasks. On four Piper tasks, the complete model achieves 62.5% mean success, compared with 37.5% for FrameSamp+Modul, with the largest gains on repeated-action counting. The results support separating execution context from historical visual evidence, while showing that the benefits depend on the memory demands of each task.</p>
       </article>
     </section>
 
@@ -72,11 +72,11 @@
           <div class="card-heading">
             <div>
               <small>Spatial stream</small>
-              <h3>Dense retrieval and linear fusion</h3>
+              <h3>Threshold retrieval and linear fusion</h3>
             </div>
-            <span class="method-tag">512 slots</span>
+            <span class="method-tag">16 / frame</span>
           </div>
-          <p>The retriever scores front-view history with the task goal and selects 32 frames. Linear multi-scale fusion fills 512 SigLIP slots from aligned 2×2, 4×4, and 8×8 grids.</p>
+          <p>The retriever scores every historical frame and keeps those whose LSE logit exceeds 0.6. Linear multi-scale fusion represents each retained frame with sixteen aligned SigLIP tokens. Memory length follows the evidence, not a fixed top-<em>k</em>.</p>
         </article>
         <article class="card">
           <div class="card-heading">
@@ -86,7 +86,7 @@
             </div>
             <span class="method-tag secondary">1 token</span>
           </div>
-          <p>A six-layer Gated DeltaNet compresses a stride-3 visual prefix into <em>c<sub>t</sub></em>. Separate cross-attention reads the patch memory and this token. Progress and reconstruction heads are training-only.</p>
+          <p>A six-layer Gated DeltaNet compresses a stride-3 visual prefix into <em>c<sub>t</sub></em>. Progress prediction and action-conditioned reconstruction supervise this state. The policy reads it as one temporal token after the auxiliary heads are removed.</p>
         </article>
       </div>
     </section>
@@ -95,115 +95,48 @@
       <div class="section-title">
         <span>EVIDENCE</span>
         <h2>Results</h2>
-        <p>Unfinished rows stay marked. They are not a ranking of the full model.</p>
+        <p>Component additions use the published FrameSamp+Modul baseline. RoboMME overall TSR for the complete model stays unmarked until that number is in the manuscript.</p>
       </div>
       <div class="stack">
         <article class="card">
-          <p>Residual multi-scale sum reached 45.42±1.12% TSR on RoboMME, 0.91 points above the published FrameSamp+Modul aggregate of 44.51±0.77%. Linear fusion, dense retrieval, and typed readout remain <span class="tbd">[TBD]</span>. Piper averages for the completed baselines are π<sub>0.5</sub> 15.0, NativeMEM 31.7, and FrameSamp+Modul 37.5. Ours is <span class="tbd">[TBD]</span>. Those unfinished rows are not a ranking of the full model.</p>
+          <p>Adding one component at a time raised suite TSR by 6.94 points on Counting (GDN), 4.22 on Permanence (threshold retrieval), and 4.50 on Reference (linear fusion). On four Piper tasks the complete model reached 62.5% mean TSR, against 37.5% for FrameSamp+Modul, with the largest gains on repeated-action counting. The sixteen-task RoboMME overall score remains <span class="tbd">[TBD]</span>.</p>
         </article>
 
         <article class="card">
           <div class="table-wrap">
             <table>
-              <caption class="visually-hidden">Fixed-grid FrameSamp TSR on RoboMME</caption>
+              <caption class="visually-hidden">Component additions to FrameSamp+Modul</caption>
               <thead>
                 <tr>
-                  <th>Grid</th>
-                  <th class="num">Tok./frame</th>
-                  <th class="num">Counting</th>
-                  <th class="num">Permanence</th>
-                  <th class="num">Reference</th>
-                  <th class="num">Imitation</th>
-                  <th class="num">Average</th>
+                  <th>Component / suite</th>
+                  <th class="num">Base</th>
+                  <th class="num">Addition</th>
+                  <th class="num">Δ (pp)</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>2×2</td>
-                  <td class="num">4</td>
-                  <td class="num">66.17</td>
-                  <td class="num">26.67</td>
-                  <td class="num">39.00</td>
-                  <td class="num">45.83</td>
-                  <td class="num">44.42±0.07</td>
-                </tr>
-                <tr>
-                  <td>4×4</td>
-                  <td class="num">16</td>
+                  <td>GDN / Counting</td>
                   <td class="num">65.22</td>
+                  <td class="num">72.17±4.25</td>
+                  <td class="num">+6.94</td>
+                </tr>
+                <tr>
+                  <td>Retrieval / Permanence</td>
                   <td class="num">25.11</td>
-                  <td class="num">36.33</td>
-                  <td class="num">51.39</td>
-                  <td class="num">44.51±0.77</td>
+                  <td class="num">29.33±0.76</td>
+                  <td class="num">+4.22</td>
                 </tr>
-                <tr>
-                  <td>8×8</td>
-                  <td class="num">64</td>
-                  <td class="num">68.67</td>
-                  <td class="num">26.33</td>
+                <tr class="ours-row">
+                  <td>Linear fusion / Reference</td>
                   <td class="num">36.33</td>
-                  <td class="num">44.17</td>
-                  <td class="num">43.88±0.82</td>
+                  <td class="num">40.83±3.62</td>
+                  <td class="num">+4.50</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p class="caption">Fixed-grid FrameSamp TSR (%) on RoboMME with 32 frames and an 80,000-step training budget. Average is the unweighted mean across four suites. The grids use 128, 512, and 2,048 patch tokens, respectively. The 4×4 row is the published FrameSamp+Modul reference; the other rows report final-checkpoint means and sample standard deviations across three evaluation seeds.</p>
-        </article>
-
-        <article class="card">
-          <div class="table-wrap">
-            <table>
-              <caption class="visually-hidden">RoboMME ablations</caption>
-              <thead>
-                <tr>
-                  <th>Variant</th>
-                  <th class="num">Patch tok.</th>
-                  <th class="num">Temp. tok.</th>
-                  <th class="num">TSR (%)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>FrameSamp+Modul</td>
-                  <td class="num">512</td>
-                  <td class="num">0</td>
-                  <td class="num">44.51±0.77</td>
-                </tr>
-                <tr class="ours-row">
-                  <td>Residual multi-scale sum</td>
-                  <td class="num">512</td>
-                  <td class="num">0</td>
-                  <td class="num">45.42±1.12</td>
-                </tr>
-                <tr>
-                  <td>Linear multi-scale fusion</td>
-                  <td class="num">512</td>
-                  <td class="num">0</td>
-                  <td class="num"><span class="tbd">[TBD]</span></td>
-                </tr>
-                <tr>
-                  <td>Dense retrieval + linear fusion</td>
-                  <td class="num">512</td>
-                  <td class="num">0</td>
-                  <td class="num"><span class="tbd">[TBD]</span></td>
-                </tr>
-                <tr>
-                  <td>Dense + linear + concatenated <em>c<sub>t</sub></em></td>
-                  <td class="num">512</td>
-                  <td class="num">1</td>
-                  <td class="num"><span class="tbd">[TBD]</span></td>
-                </tr>
-                <tr class="ours-row">
-                  <td>Dense + linear + typed <em>c<sub>t</sub></em> (full)</td>
-                  <td class="num">512</td>
-                  <td class="num">1</td>
-                  <td class="num"><span class="tbd">[TBD]</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="caption">RoboMME ablations after 80,000-step policy training. TSR is mean ± sample standard deviation across evaluation seeds 0, 7, and 42, except FrameSamp+Modul, which is the published 4×4 aggregate also shown in the resolution table. Patch and temporal columns give policy-facing token budgets.</p>
+          <p class="caption">Suite means when each component is added to FrameSamp+Modul. TSR (%) averages three evaluation seeds. Δ is computed before rounding. FrameSamp+Modul values are the published RoboMME reference.</p>
         </article>
 
         <article class="card">
@@ -247,16 +180,16 @@
                 </tr>
                 <tr class="ours-row">
                   <td>Ours</td>
-                  <td class="num"><span class="tbd">[TBD]</span></td>
-                  <td class="num"><span class="tbd">[TBD]</span></td>
-                  <td class="num"><span class="tbd">[TBD]</span></td>
-                  <td class="num"><span class="tbd">[TBD]</span></td>
-                  <td class="num"><span class="tbd">[TBD]</span></td>
+                  <td class="num">80.0</td>
+                  <td class="num">93.3</td>
+                  <td class="num">36.7</td>
+                  <td class="num">40.0</td>
+                  <td class="num">62.5</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p class="caption">Piper task success rate (%). Each pair of task and method comprised 30 rollouts from one evaluation pass. Avg. is the unweighted mean across the four tasks.</p>
+          <p class="caption">Piper TSR (%): 30 rollouts per task and method. Avg. weights the four tasks equally. The largest gains are on Pick×3 and Swing×2. Shell declined from 53.3% to 40.0%.</p>
         </article>
 
         <div class="figure-grid">
@@ -265,15 +198,15 @@
               <div class="figure-frame">
                 <img src="assets/progress.png" alt="Current-progress predictions versus ground truth for eight tasks, two episodes each.">
               </div>
-              <figcaption>Current-progress predictions for the first eight tasks, with two episodes per task. Blue and orange identify episodes; solid and dashed curves denote predictions and reference labels. The horizontal axis is normalized execution time.</figcaption>
+              <figcaption>Current-progress predictions for the first eight tasks, with two episodes per task. Blue and orange identify episodes; solid and dashed curves denote predictions and reference labels. Progress-head MSE is 0.03430 over sixteen tasks.</figcaption>
             </figure>
           </article>
           <article class="card">
             <figure>
               <div class="figure-frame">
-                <img src="assets/history.png" alt="Sixteen-slot visual history comparisons for five tasks, each with a ground-truth row and a prediction-associated row.">
+                <img src="assets/history.png" alt="Sixteen-slot visual history comparisons with green match boxes and red mismatch boxes.">
               </div>
-              <figcaption>Sixteen-slot visual-history comparisons for (a) ButtonUnmask, (b) InsertPeg, (c) PatternLock, (d) SwingXtimes, and (e) VideoRepick. Blue and orange borders distinguish reference (GT) and prediction-associated (Pred) images. These qualitative pairs show scene correspondence; they do not establish exact temporal retrieval.</figcaption>
+              <figcaption>Sixteen-slot visual-history comparisons for five tasks. Green boxes mark scene matches and red boxes mark mismatches: 70 matches among 80 displayed slots. These examples illustrate action-conditioned reconstruction, not dataset-level retrieval accuracy.</figcaption>
             </figure>
           </article>
         </div>
@@ -290,7 +223,7 @@
       </div>
       <article class="card">
         <pre id="bibtex-source"><code>@inproceedings{anonymous2027dualstream,
-  title={Dual-Stream Memory for VLAs: Causal Retrieval, Streaming Compression, and Linear Multi-Scale Fusion},
+  title={Dual-Stream Memory for Vision-Language-Action Policies},
   year={2027},
   note={Under double-anonymous review}
 }</code></pre>
