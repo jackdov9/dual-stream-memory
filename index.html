@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dual-Stream Memory for Vision-Language-Action Policies | ICRA 2027</title>
   <meta name="description" content="Dual-stream memory for VLA policies: recurrent execution context and threshold retrieval of historical images. ICRA 2027, under double-anonymous review.">
-  <link rel="icon" href="favicon.svg?v=4" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="icon" href="favicon.svg?v=5" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
   <header class="site-head">
@@ -28,10 +28,10 @@
       <p class="authors">Anonymous Authors</p>
       <p class="lead">Recurrent execution context stays in one temporal token. Task-conditioned retrieval keeps historical images above a relevance threshold. Linear fusion represents each retained frame in sixteen spatial tokens.</p>
       <div class="facts">
-        <span class="fact"><b>1</b> temporal token</span>
-        <span class="fact"><b>16</b> tokens / frame</span>
-        <span class="fact"><b>0.6</b> retrieval threshold</span>
+        <span class="fact"><b>49.22%</b> RoboMME mean TSR</span>
+        <span class="fact"><b>+4.71</b> pp vs FrameSamp</span>
         <span class="fact"><b>62.5%</b> Piper mean TSR</span>
+        <span class="fact"><b>14/16</b> tasks improved</span>
       </div>
       <p class="chip">Under double-anonymous review</p>
       <nav class="pills" aria-label="On this page">
@@ -57,7 +57,7 @@
         <h2>Abstract</h2>
       </div>
       <article class="card">
-        <p>Memory-dependent manipulation requires tracking execution progress while recovering visual evidence that is no longer visible. We present dual-stream memory for vision-language-action policies, separating recurrent execution context from task-conditioned access to historical images. A task-agnostic Gated DeltaNet compresses visual history into one temporal token. A retriever retains frames above a fixed relevance threshold, while linear multi-scale fusion represents each retained frame in sixteen spatial tokens. The two streams are pretrained independently and then jointly trained with the policy. Adding the components individually to FrameSamp+Modul yields average success gains of 6.94, 4.22, and 4.50 percentage points on Counting, Permanence, and Reference, respectively. These comparisons use the published RoboMME baseline and show task-dependent gains. The complete model achieves <span class="tbd">[TBD]</span>% overall success on sixteen RoboMME tasks. On four Piper tasks, the complete model achieves 62.5% mean success, compared with 37.5% for FrameSamp+Modul, with the largest gains on repeated-action counting. The results support separating execution context from historical visual evidence, while showing that the benefits depend on the memory demands of each task.</p>
+        <p>Memory-dependent manipulation requires tracking execution progress while recovering visual evidence that is no longer visible. We present dual-stream memory for vision-language-action policies, separating recurrent execution context from task-conditioned access to historical images. A task-agnostic Gated DeltaNet compresses visual history into one temporal token. A retriever retains frames above a fixed relevance threshold, while linear multi-scale fusion represents each retained frame in sixteen spatial tokens. The two streams are pretrained independently and then jointly trained with the policy. The complete model achieves 49.22% mean success across sixteen RoboMME tasks, compared with 44.51% for the published FrameSamp+Modul baseline. Gains span all four task suites, with improvements on fourteen of sixteen tasks. Component comparisons examine the roles of execution context, frame relevance, and spatial detail. On four Piper tasks, mean success reaches 62.5%, compared with 37.5% for FrameSamp+Modul, with the largest gains on repeated-action counting. These results support complementary memory representations while identifying task-dependent limits in recovering and using historical evidence.</p>
       </article>
     </section>
 
@@ -95,11 +95,11 @@
       <div class="section-title">
         <span>EVIDENCE</span>
         <h2>Results</h2>
-        <p>Component additions use the published FrameSamp+Modul baseline. RoboMME overall TSR for the complete model stays unmarked until that number is in the manuscript.</p>
+        <p>The complete model is 49.22% mean TSR on sixteen RoboMME tasks, 4.71 points above FrameSamp+Modul. Component additions remain descriptive comparisons with the published baseline.</p>
       </div>
       <div class="stack">
         <article class="card">
-          <p>Adding one component at a time raised suite TSR by 6.94 points on Counting (GDN), 4.22 on Permanence (threshold retrieval), and 4.50 on Reference (linear fusion). On four Piper tasks the complete model reached 62.5% mean TSR, against 37.5% for FrameSamp+Modul, with the largest gains on repeated-action counting. The sixteen-task RoboMME overall score remains <span class="tbd">[TBD]</span>.</p>
+          <p>The complete model reached 49.22% mean TSR on RoboMME versus 44.51% for FrameSamp+Modul. All four suite means increased; fourteen of sixteen tasks improved. VideoUnmaskSwap and PatternLock declined. Combined gains do not simply add across components. On Piper, mean TSR is 62.5% versus 37.5%, with the largest gains on repeated-action counting; Shell declined from 53.3% to 40.0%.</p>
         </article>
 
         <article class="card">
@@ -137,6 +137,55 @@
             </table>
           </div>
           <p class="caption">Suite means when each component is added to FrameSamp+Modul. TSR (%) averages three evaluation seeds. Δ is computed before rounding. FrameSamp+Modul values are the published RoboMME reference.</p>
+        </article>
+
+        <article class="card">
+          <div class="table-wrap">
+            <table>
+              <caption class="visually-hidden">Complete model RoboMME suite means</caption>
+              <thead>
+                <tr>
+                  <th>Suite</th>
+                  <th class="num">FrameSamp+Modul</th>
+                  <th class="num">Ours</th>
+                  <th class="num">Δ (pp)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Counting</td>
+                  <td class="num">65.22</td>
+                  <td class="num">70.83</td>
+                  <td class="num">+5.61</td>
+                </tr>
+                <tr>
+                  <td>Permanence</td>
+                  <td class="num">25.11</td>
+                  <td class="num">27.75</td>
+                  <td class="num">+2.64</td>
+                </tr>
+                <tr>
+                  <td>Reference</td>
+                  <td class="num">36.33</td>
+                  <td class="num">45.31</td>
+                  <td class="num">+8.98</td>
+                </tr>
+                <tr>
+                  <td>Imitation</td>
+                  <td class="num">51.39</td>
+                  <td class="num">53.00</td>
+                  <td class="num">+1.61</td>
+                </tr>
+                <tr class="ours-row">
+                  <td>Overall</td>
+                  <td class="num">44.51</td>
+                  <td class="num">49.22</td>
+                  <td class="num">+4.71</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="caption">Complete-model RoboMME suite means versus the published FrameSamp+Modul reference. Means weight tasks equally. Δ is computed from the reported task means.</p>
         </article>
 
         <article class="card">
